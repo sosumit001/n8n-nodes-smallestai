@@ -49,10 +49,9 @@ To use this node, you need a Smallest AI API key:
 
 ## Resources
 
-- [Smallest AI Documentation](https://docs.smallest.ai)
-- [Smallest AI API Reference](https://waves-api.smallest.ai)
-- [Smallest AI Console](https://console.smallest.ai)
-- [n8n Community Nodes Documentation](https://docs.n8n.io/integrations/community-nodes/)
+- [Smallest AI Documentation](https://waves-docs.smallest.ai/)
+- [Smallest AI API Reference](https://waves-docs.smallest.ai/v4.0.0/content/api-references/authentication)
+- [n8n Community Nodes Documentation](https://docs.n8n.io/integrations/)
 
 ## License
 
