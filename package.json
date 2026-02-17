@@ -20,7 +20,7 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/sosumit001/n8n-nodes-smallestai.git"
+		"url": "git+https://github.com/sosumit001/n8n-nodes-smallestai.git"
 	},
 	"scripts": {
 		"build": "n8n-node build",
