@@ -1,6 +1,6 @@
 {
 	"name": "n8n-nodes-smallestai",
-	"version": "0.1.0",
+	"version": "0.1.2",
 	"description": "n8n community node for Smallest AI — text-to-speech, speech-to-text, and voice cloning APIs",
 	"license": "MIT",
 	"homepage": "https://smallest.ai",
