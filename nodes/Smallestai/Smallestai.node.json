@@ -1,0 +1,21 @@
+{
+	"node": "n8n-nodes-smallestai",
+	"nodeVersion": "1.0",
+	"codexVersion": "1.0",
+	"categories": [
+		"AI",
+		"Miscellaneous"
+	],
+	"resources": {
+		"credentialDocumentation": [
+			{
+				"url": "https://console.smallest.ai/apikeys"
+			}
+		],
+		"primaryDocumentation": [
+			{
+				"url": "https://waves-docs.smallest.ai/"
+			}
+		]
+	}
+}

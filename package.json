@@ -1,0 +1,58 @@
+{
+	"name": "n8n-nodes-smallestai",
+	"version": "0.1.0",
+	"description": "n8n community node for Smallest AI — text-to-speech, speech-to-text, and voice cloning APIs",
+	"license": "MIT",
+	"homepage": "https://smallest.ai",
+	"keywords": [
+		"n8n-community-node-package",
+		"smallest-ai",
+		"text-to-speech",
+		"speech-to-text",
+		"voice-cloning",
+		"tts",
+		"stt",
+		"voice-ai"
+	],
+	"author": {
+		"name": "Smallest AI",
+		"email": "support@smallest.ai"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/sosumit001/n8n-nodes-smallestai.git"
+	},
+	"scripts": {
+		"build": "n8n-node build",
+		"build:watch": "tsc --watch",
+		"dev": "n8n-node dev",
+		"lint": "n8n-node lint",
+		"lint:fix": "n8n-node lint --fix",
+		"release": "n8n-node release",
+		"prepublishOnly": "n8n-node prerelease"
+	},
+	"files": [
+		"dist"
+	],
+	"n8n": {
+		"n8nNodesApiVersion": 1,
+		"strict": true,
+		"credentials": [
+			"dist/credentials/SmallestaiApi.credentials.js"
+		],
+		"nodes": [
+			"dist/nodes/Smallestai/Smallestai.node.js"
+		]
+	},
+	"devDependencies": {
+		"@n8n/node-cli": "*",
+		"@types/node": "^25.2.3",
+		"eslint": "9.32.0",
+		"prettier": "3.6.2",
+		"release-it": "^19.0.4",
+		"typescript": "5.9.2"
+	},
+	"peerDependencies": {
+		"n8n-workflow": "*"
+	}
+}
