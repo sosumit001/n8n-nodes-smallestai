@@ -1,4 +1,4 @@
-import type { IExecuteFunctions, INodeExecutionData, IDataObject } from 'n8n-workflow';
+import type { IExecuteFunctions, INodeExecutionData, IDataObject, IHttpRequestOptions } from 'n8n-workflow';
 
 export async function handleTtsSynthesize(
     ctx: IExecuteFunctions,
@@ -17,16 +17,18 @@ export async function handleTtsSynthesize(
         ...additionalOptions,
     };
 
-    const response = await ctx.helpers.requestWithAuthentication.call(
+    const options: IHttpRequestOptions = {
+        method: 'POST',
+        url: `https://waves-api.smallest.ai/api/v1/${model}/get_speech`,
+        body,
+        json: true,
+        returnFullResponse: false,
+    };
+
+    const response = await ctx.helpers.httpRequestWithAuthentication.call(
         ctx,
         'smallestaiApi',
-        {
-            method: 'POST',
-            url: `https://waves-api.smallest.ai/api/v1/${model}/get_speech`,
-            body,
-            json: true,
-            encoding: null,
-        },
+        options,
     );
 
     const fullAudio = response as Buffer;
@@ -41,6 +43,7 @@ export async function handleTtsSynthesize(
         binary: {
             data: binaryData,
         },
+        pairedItem: { item: itemIndex },
     };
 }
 
@@ -53,20 +56,22 @@ export async function handleGetVoices(
 ): Promise<INodeExecutionData[]> {
     const model = ctx.getNodeParameter('model', itemIndex) as string;
 
-    const response = await ctx.helpers.requestWithAuthentication.call(
+    const options: IHttpRequestOptions = {
+        method: 'GET',
+        url: `https://waves-api.smallest.ai/api/v1/${model}/get_voices`,
+        json: true,
+    };
+
+    const response = await ctx.helpers.httpRequestWithAuthentication.call(
         ctx,
         'smallestaiApi',
-        {
-            method: 'GET',
-            url: `https://waves-api.smallest.ai/api/v1/${model}/get_voices`,
-            json: true,
-        },
+        options,
     );
 
     // Return each voice as a separate item
     const voices = (response as { voices?: IDataObject[] }).voices || [];
     if (voices.length === 0) {
-        return [{ json: response as IDataObject }];
+        return [{ json: response as IDataObject, pairedItem: { item: itemIndex } }];
     }
-    return voices.map((voice: IDataObject) => ({ json: voice }));
+    return voices.map((voice: IDataObject) => ({ json: voice, pairedItem: { item: itemIndex } }));
 }

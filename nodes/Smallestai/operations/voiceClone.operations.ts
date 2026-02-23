@@ -1,4 +1,4 @@
-import type { IExecuteFunctions, INodeExecutionData, IDataObject } from 'n8n-workflow';
+import type { IExecuteFunctions, INodeExecutionData, IDataObject, IHttpRequestOptions } from 'n8n-workflow';
 import { NodeOperationError } from 'n8n-workflow';
 
 const API_BASE = 'https://waves-api.smallest.ai/api/v1';
@@ -40,18 +40,20 @@ export async function handleAddVoice(
         },
     };
 
-    const response = await ctx.helpers.requestWithAuthentication.call(
+    const options: IHttpRequestOptions = {
+        method: 'POST',
+        url: `${API_BASE}/${model}/add_voice`,
+        body: formData,
+        json: true,
+    };
+
+    const response = await ctx.helpers.httpRequestWithAuthentication.call(
         ctx,
         'smallestaiApi',
-        {
-            method: 'POST',
-            url: `${API_BASE}/${model}/add_voice`,
-            formData,
-            json: true,
-        },
+        options,
     );
 
-    return { json: response };
+    return { json: response, pairedItem: { item: itemIndex } };
 }
 
 /**
@@ -62,22 +64,25 @@ export async function handleGetClonedVoices(
     itemIndex: number,
 ): Promise<INodeExecutionData[]> {
     const model = ctx.getNodeParameter('model', itemIndex) as string;
-    const response = await ctx.helpers.requestWithAuthentication.call(
+
+    const options: IHttpRequestOptions = {
+        method: 'GET',
+        url: `${API_BASE}/${model}/get_cloned_voices`,
+        json: true,
+    };
+
+    const response = await ctx.helpers.httpRequestWithAuthentication.call(
         ctx,
         'smallestaiApi',
-        {
-            method: 'GET',
-            url: `${API_BASE}/${model}/get_cloned_voices`,
-            json: true,
-        },
+        options,
     );
 
     // Return each voice as a separate item for easier downstream processing
     const voices = (response as { voices?: IDataObject[] }).voices || [];
     if (voices.length === 0) {
-        return [{ json: response as IDataObject }];
+        return [{ json: response as IDataObject, pairedItem: { item: itemIndex } }];
     }
-    return voices.map((voice: IDataObject) => ({ json: voice }));
+    return voices.map((voice: IDataObject) => ({ json: voice, pairedItem: { item: itemIndex } }));
 }
 
 /**
@@ -90,16 +95,18 @@ export async function handleDeleteClonedVoice(
     const model = ctx.getNodeParameter('model', itemIndex) as string;
     const voiceId = ctx.getNodeParameter('voiceId', itemIndex) as string;
 
-    const response = await ctx.helpers.requestWithAuthentication.call(
+    const options: IHttpRequestOptions = {
+        method: 'DELETE',
+        url: `${API_BASE}/${model}`,
+        body: { voiceId },
+        json: true,
+    };
+
+    const response = await ctx.helpers.httpRequestWithAuthentication.call(
         ctx,
         'smallestaiApi',
-        {
-            method: 'DELETE',
-            url: `${API_BASE}/${model}`,
-            body: { voiceId },
-            json: true,
-        },
+        options,
     );
 
-    return { json: response };
+    return { json: response, pairedItem: { item: itemIndex } };
 }

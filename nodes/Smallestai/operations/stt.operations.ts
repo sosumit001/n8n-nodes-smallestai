@@ -1,4 +1,4 @@
-import type { IExecuteFunctions, INodeExecutionData, IDataObject } from 'n8n-workflow';
+import type { IExecuteFunctions, INodeExecutionData, IDataObject, IHttpRequestOptions } from 'n8n-workflow';
 import { NodeOperationError } from 'n8n-workflow';
 
 export async function handleSttTranscribe(
@@ -22,27 +22,30 @@ export async function handleSttTranscribe(
 
     const binaryBuffer = await ctx.helpers.getBinaryDataBuffer(itemIndex, binaryPropertyName);
 
-    const response = await ctx.helpers.requestWithAuthentication.call(
+    const options: IHttpRequestOptions = {
+        method: 'POST',
+        url: 'https://waves-api.smallest.ai/api/v1/pulse/get_text',
+        qs: {
+            language: additionalOptions.language || 'en',
+            age_detection: additionalOptions.age_detection ?? false,
+            gender_detection: additionalOptions.gender_detection ?? false,
+            emotion_detection: additionalOptions.emotion_detection ?? false,
+        },
+        body: binaryBuffer,
+        headers: {
+            'Content-Type': 'application/octet-stream',
+        },
+        json: true,
+    };
+
+    const response = await ctx.helpers.httpRequestWithAuthentication.call(
         ctx,
         'smallestaiApi',
-        {
-            method: 'POST',
-            url: 'https://waves-api.smallest.ai/api/v1/pulse/get_text',
-            qs: {
-                language: additionalOptions.language || 'en',
-                age_detection: additionalOptions.age_detection ?? false,
-                gender_detection: additionalOptions.gender_detection ?? false,
-                emotion_detection: additionalOptions.emotion_detection ?? false,
-            },
-            body: binaryBuffer,
-            headers: {
-                'Content-Type': 'application/octet-stream',
-            },
-            json: true,
-        },
+        options,
     );
 
     return {
         json: response,
+        pairedItem: { item: itemIndex },
     };
 }

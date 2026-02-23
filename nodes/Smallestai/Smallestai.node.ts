@@ -92,7 +92,7 @@ export class Smallestai implements INodeType {
                 }
             } catch (error) {
                 if (this.continueOnFail()) {
-                    returnData.push({ json: { error: (error as Error).message } });
+                    returnData.push({ json: { error: (error as Error).message }, pairedItem: { item: i } });
                     continue;
                 }
                 throw new NodeOperationError(this.getNode(), error);
