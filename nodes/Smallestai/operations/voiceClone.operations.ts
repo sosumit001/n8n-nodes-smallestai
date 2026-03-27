@@ -1,6 +1,5 @@
 import type { IExecuteFunctions, INodeExecutionData, IDataObject, IHttpRequestOptions } from 'n8n-workflow';
 import { NodeOperationError } from 'n8n-workflow';
-import FormData from 'form-data';
 
 const API_BASE = 'https://api.smallest.ai/waves/v1';
 
@@ -30,18 +29,35 @@ export async function handleAddVoice(
     const binaryData = items[itemIndex].binary![binaryPropertyName];
     const binaryBuffer = await ctx.helpers.getBinaryDataBuffer(itemIndex, binaryPropertyName);
 
-    const form = new FormData();
-    form.append('displayName', displayName);
-    form.append('file', binaryBuffer, {
-        filename: binaryData.fileName || 'audio.wav',
-        contentType: binaryData.mimeType || 'audio/wav',
-    });
+    // Build multipart/form-data body manually (no external imports allowed by n8n Cloud)
+    const boundary = '----n8nFormBoundary' + Math.random().toString(36).substring(2);
+    const fileName = binaryData.fileName || 'audio.wav';
+    const mimeType = binaryData.mimeType || 'audio/wav';
+
+    const parts: Buffer[] = [];
+
+    // displayName field
+    parts.push(Buffer.from(
+        `--${boundary}\r\nContent-Disposition: form-data; name="displayName"\r\n\r\n${displayName}\r\n`,
+    ));
+
+    // file field
+    parts.push(Buffer.from(
+        `--${boundary}\r\nContent-Disposition: form-data; name="file"; filename="${fileName}"\r\nContent-Type: ${mimeType}\r\n\r\n`,
+    ));
+    parts.push(binaryBuffer);
+    parts.push(Buffer.from(`\r\n--${boundary}--\r\n`));
+
+    const body = Buffer.concat(parts);
 
     const options: IHttpRequestOptions = {
         method: 'POST',
         url: `${API_BASE}/${model}/add_voice`,
-        body: form,
-        headers: form.getHeaders(),
+        body,
+        headers: {
+            'Content-Type': `multipart/form-data; boundary=${boundary}`,
+            'Content-Length': body.length.toString(),
+        },
     };
 
     const response = await ctx.helpers.httpRequestWithAuthentication.call(
