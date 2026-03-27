@@ -6,10 +6,10 @@ export async function handleTtsSynthesize(
 ): Promise<INodeExecutionData> {
     const model = ctx.getNodeParameter('model', itemIndex) as string;
     const text = ctx.getNodeParameter('text', itemIndex) as string;
-    const selectedVoice = ctx.getNodeParameter('voiceId', itemIndex) as string;
-    const voiceId = selectedVoice === '__custom__'
+    const voiceSource = ctx.getNodeParameter('voiceSource', itemIndex) as string;
+    const voiceId = voiceSource === 'custom'
         ? (ctx.getNodeParameter('customVoiceId', itemIndex) as string)
-        : selectedVoice;
+        : (ctx.getNodeParameter('voiceId', itemIndex) as string);
     const output_format = ctx.getNodeParameter('output_format', itemIndex) as string;
     const additionalOptions = ctx.getNodeParameter('additionalOptions', itemIndex, {}) as IDataObject;
 
