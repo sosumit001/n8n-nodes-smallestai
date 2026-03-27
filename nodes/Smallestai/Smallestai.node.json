@@ -1,9 +1,9 @@
 {
-	"node": "n8n-nodes-smallestai",
+	"node": "n8n-nodes-smallestai.Smallestai",
 	"nodeVersion": "1.0",
 	"codexVersion": "1.0",
 	"categories": [
-		"AI",
+		"Development",
 		"Miscellaneous"
 	],
 	"resources": {

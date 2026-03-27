@@ -3,8 +3,9 @@ import type {
     INodeExecutionData,
     INodeType,
     INodeTypeDescription,
+    JsonObject,
 } from 'n8n-workflow';
-import { NodeOperationError } from 'n8n-workflow';
+import { NodeConnectionTypes, NodeApiError } from 'n8n-workflow';
 
 import { ttsOperations, ttsFields, sttOperations, sttFields, voiceCloneOperations, voiceCloneFields } from './descriptions';
 import { handleTtsSynthesize, handleGetVoices, handleSttTranscribe, handleAddVoice, handleGetClonedVoices, handleDeleteClonedVoice } from './operations';
@@ -22,8 +23,8 @@ export class Smallestai implements INodeType {
         defaults: {
             name: 'Smallest AI',
         },
-        inputs: ['main'],
-        outputs: ['main'],
+        inputs: [NodeConnectionTypes.Main],
+        outputs: [NodeConnectionTypes.Main],
         credentials: [
             {
                 name: 'smallestaiApi',
@@ -95,7 +96,7 @@ export class Smallestai implements INodeType {
                     returnData.push({ json: { error: (error as Error).message }, pairedItem: { item: i } });
                     continue;
                 }
-                throw new NodeOperationError(this.getNode(), error);
+                throw new NodeApiError(this.getNode(), error as JsonObject, { itemIndex: i });
             }
         }
 

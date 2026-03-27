@@ -19,9 +19,10 @@ export async function handleTtsSynthesize(
 
     const options: IHttpRequestOptions = {
         method: 'POST',
-        url: `https://waves-api.smallest.ai/api/v1/${model}/get_speech`,
+        url: `https://api.smallest.ai/waves/v1/${model}/get_speech`,
         body,
         json: true,
+        encoding: 'arraybuffer',
         returnFullResponse: false,
     };
 
@@ -58,7 +59,7 @@ export async function handleGetVoices(
 
     const options: IHttpRequestOptions = {
         method: 'GET',
-        url: `https://waves-api.smallest.ai/api/v1/${model}/get_voices`,
+        url: `https://api.smallest.ai/waves/v1/${model}/get_voices`,
         json: true,
     };
 

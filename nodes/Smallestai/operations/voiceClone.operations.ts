@@ -1,7 +1,8 @@
 import type { IExecuteFunctions, INodeExecutionData, IDataObject, IHttpRequestOptions } from 'n8n-workflow';
 import { NodeOperationError } from 'n8n-workflow';
+import FormData from 'form-data';
 
-const API_BASE = 'https://waves-api.smallest.ai/api/v1';
+const API_BASE = 'https://api.smallest.ai/waves/v1';
 
 /**
  * Add (clone) a voice from an uploaded audio file.
@@ -29,22 +30,18 @@ export async function handleAddVoice(
     const binaryData = items[itemIndex].binary![binaryPropertyName];
     const binaryBuffer = await ctx.helpers.getBinaryDataBuffer(itemIndex, binaryPropertyName);
 
-    const formData = {
-        displayName,
-        file: {
-            value: binaryBuffer,
-            options: {
-                filename: binaryData.fileName || 'audio.wav',
-                contentType: binaryData.mimeType || 'audio/wav',
-            },
-        },
-    };
+    const form = new FormData();
+    form.append('displayName', displayName);
+    form.append('file', binaryBuffer, {
+        filename: binaryData.fileName || 'audio.wav',
+        contentType: binaryData.mimeType || 'audio/wav',
+    });
 
     const options: IHttpRequestOptions = {
         method: 'POST',
         url: `${API_BASE}/${model}/add_voice`,
-        body: formData,
-        json: true,
+        body: form,
+        headers: form.getHeaders(),
     };
 
     const response = await ctx.helpers.httpRequestWithAuthentication.call(
