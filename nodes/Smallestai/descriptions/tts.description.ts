@@ -13,16 +13,16 @@ export const ttsOperations: INodeProperties[] = [
         },
         options: [
             {
-                name: 'Synthesize Speech',
-                value: 'synthesize',
-                description: 'Convert text to speech',
-                action: 'Synthesize speech',
-            },
-            {
                 name: 'Get Voices',
                 value: 'getVoices',
                 description: 'Retrieve available voice models',
                 action: 'Get voices',
+            },
+            {
+                name: 'Synthesize Speech',
+                value: 'synthesize',
+                description: 'Convert text to speech',
+                action: 'Synthesize speech',
             },
         ],
         default: 'synthesize',

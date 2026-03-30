@@ -19,16 +19,16 @@ export const voiceCloneOperations: INodeProperties[] = [
                 action: 'Add voice',
             },
             {
-                name: 'Get Cloned Voices',
-                value: 'getClonedVoices',
-                description: 'Retrieve all your cloned voices',
-                action: 'Get cloned voices',
-            },
-            {
                 name: 'Delete Cloned Voice',
                 value: 'deleteClonedVoice',
                 description: 'Delete a cloned voice by its ID',
                 action: 'Delete cloned voice',
+            },
+            {
+                name: 'Get Cloned Voices',
+                value: 'getClonedVoices',
+                description: 'Retrieve all your cloned voices',
+                action: 'Get cloned voices',
             },
         ],
         default: 'addVoice',

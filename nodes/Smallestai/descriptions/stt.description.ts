@@ -53,6 +53,24 @@ export const sttFields: INodeProperties[] = [
         },
         options: [
             {
+                displayName: 'Age Detection',
+                name: 'age_detection',
+                type: 'boolean',
+                default: false,
+            },
+            {
+                displayName: 'Emotion Detection',
+                name: 'emotion_detection',
+                type: 'boolean',
+                default: false,
+            },
+            {
+                displayName: 'Gender Detection',
+                name: 'gender_detection',
+                type: 'boolean',
+                default: false,
+            },
+            {
                 displayName: 'Language',
                 name: 'language',
                 type: 'options',
@@ -79,24 +97,6 @@ export const sttFields: INodeProperties[] = [
                     { name: 'Telugu', value: 'te' },
                 ],
                 default: 'en',
-            },
-            {
-                displayName: 'Age Detection',
-                name: 'age_detection',
-                type: 'boolean',
-                default: false,
-            },
-            {
-                displayName: 'Gender Detection',
-                name: 'gender_detection',
-                type: 'boolean',
-                default: false,
-            },
-            {
-                displayName: 'Emotion Detection',
-                name: 'emotion_detection',
-                type: 'boolean',
-                default: false,
             },
         ],
     },
