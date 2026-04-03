@@ -8,7 +8,7 @@ import {
 export class SmallestaiApi implements ICredentialType {
     name = 'smallestaiApi';
     displayName = 'Smallest.ai API';
-    documentationUrl = 'https://console.smallest.ai/apikeys';
+    documentationUrl = 'https://app.smallest.ai/login?utm_source=n8n&utm_medium=integration&utm_campaign=api_key';
     icon = { light: 'file:../icons/smallestai.svg', dark: 'file:../icons/smallestai.svg' } as const;
 
     properties: INodeProperties[] = [
