@@ -34,7 +34,7 @@ export class SmallestaiApi implements ICredentialType {
     test: ICredentialTestRequest = {
         request: {
             baseURL: 'https://api.smallest.ai',
-            url: '/v3/voices',
+            url: '/waves/v1/lightning-v3.1/get_voices',
         },
     };
 }

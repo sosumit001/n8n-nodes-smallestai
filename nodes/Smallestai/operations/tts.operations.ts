@@ -21,6 +21,9 @@ export async function handleTtsSynthesize(
     };
 
     const options: IHttpRequestOptions = {
+        headers:{
+            "X-Source": "n8n-smallestai-node",
+        },
         method: 'POST',
         url: `https://api.smallest.ai/waves/v1/${model}/get_speech`,
         body,

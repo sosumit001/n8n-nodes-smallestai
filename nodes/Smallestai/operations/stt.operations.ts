@@ -23,6 +23,10 @@ export async function handleSttTranscribe(
     const binaryBuffer = await ctx.helpers.getBinaryDataBuffer(itemIndex, binaryPropertyName);
 
     const options: IHttpRequestOptions = {
+        headers:{
+            'Content-Type': 'application/octet-stream',
+            "X-Source": "n8n-smallestai-node",
+        },
         method: 'POST',
         url: 'https://waves-api.smallest.ai/api/v1/pulse/get_text',
         qs: {
@@ -32,9 +36,6 @@ export async function handleSttTranscribe(
             emotion_detection: additionalOptions.emotion_detection ?? false,
         },
         body: binaryBuffer,
-        headers: {
-            'Content-Type': 'application/octet-stream',
-        },
         json: true,
     };
 
